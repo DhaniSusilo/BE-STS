@@ -134,7 +134,7 @@ func (u UseCase) GetDashboardData(ctx context.Context, request *requests.GetDash
 	return &sharedresponse.BasicResponse{
 		Data: struct {
 			Message string
-			Data *responses.GetDashboardData
+			Data    *responses.GetDashboardData
 		}{
 
 			Message: "Success get dashboard data",
@@ -144,20 +144,40 @@ func (u UseCase) GetDashboardData(ctx context.Context, request *requests.GetDash
 }
 
 func (u UseCase) GetRekapitulasi(ctx context.Context, req *requests.RekapitulasiRequest) (*responses.RekapitulasiResponse, error) {
-    // Check user level
-    if req.Level == "Kelurahan" {
-        // Fetch detailed members list for that kelurahan
-        members, total, err := u.repo.GetMembersByKelurahan(ctx, req.Wilayah, req.Page, req.RowsPerPage)
-        if err != nil {
-            return nil, err
-        }
-        return &responses.RekapitulasiResponse{Members: *members, TotalCount: total}, nil
-    } else {
-        // Fetch aggregated counts for wilayahs up to kecamatan level
-        aggregated, total, err := u.repo.GetAggregatedRekapitulasi(ctx, req.Level, req.Wilayah, req.Page, req.RowsPerPage)
-        if err != nil {
-            return nil, err
-        }
-        return &responses.RekapitulasiResponse{Aggregated: *aggregated, TotalCount: total}, nil
-    }
+	// Check user level
+	if req.Level == "Kelurahan" {
+		// Fetch detailed members list for that kelurahan
+		members, total, err := u.repo.GetMembersByKelurahan(ctx, req.Wilayah, req.Page, req.RowsPerPage)
+		if err != nil {
+			return nil, err
+		}
+		return &responses.RekapitulasiResponse{Members: *members, TotalCount: total}, nil
+	} else {
+		// Fetch aggregated counts for wilayahs up to kecamatan level
+		aggregated, total, err := u.repo.GetAggregatedRekapitulasi(ctx, req.Level, req.Wilayah, req.Page, req.RowsPerPage)
+		if err != nil {
+			return nil, err
+		}
+		return &responses.RekapitulasiResponse{Aggregated: *aggregated, TotalCount: total}, nil
+	}
+}
+
+// GetAllUser implements interfaces.UseCase.
+func (u UseCase) GetAllUser(ctx context.Context) (*sharedresponse.BasicResponse, error) {
+	users, err := u.repo.GetAllUser(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &sharedresponse.BasicResponse{
+		Data: struct{
+			Message string
+			Data *[]entities.User
+
+		}{
+
+			Message: "Successfully retrieved all users",
+			Data:    users,
+		},
+	}, nil
 }

@@ -14,6 +14,7 @@ type UseCase interface {
 	AddMember(ctx context.Context, request *requests.MemberRegistration) (*sharedresponses.BasicResponse, error)
 	GetDashboardData(ctx context.Context,request *requests.GetDashboardData) (*sharedresponses.BasicResponse, error)
 	GetRekapitulasi(ctx context.Context, req *requests.RekapitulasiRequest) (*responses.RekapitulasiResponse, error)
+	GetAllUser(ctx context.Context) (*sharedresponses.BasicResponse,error)
 }
 
 type Repository interface {
@@ -24,4 +25,5 @@ type Repository interface {
 	GetDashboardData(ctx context.Context, request *requests.GetDashboardData) (*responses.GetDashboardData,error)
 	GetAggregatedRekapitulasi(ctx context.Context, level, wilayah string, page, rowsPerPage int) (*[]responses.RekapitulasiResult, int, error)
 	GetMembersByKelurahan(ctx context.Context, kelurahan string, page, rowsPerPage int) (*[]responses.MemberDetail, int, error)
+	GetAllUser(ctx context.Context) (*[]entities.User,error)
 }

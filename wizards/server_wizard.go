@@ -25,5 +25,6 @@ func RegisterServer(router *gin.Engine) {
 	{
 		admin.POST("/dashboard",Http.GetDashboardData)
 		admin.POST("/rekap",Http.GetRekapitulasi)
+		admin.GET("/all",Http.GetAllUser)
 	}
 }

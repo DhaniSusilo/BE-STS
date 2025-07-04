@@ -202,3 +202,15 @@ func (repo databaseRepository) GetMembersByKelurahan(ctx context.Context, kelura
 	return &members, int(total), nil
 }
 
+// GetAllUser implements interfaces.Repository.
+func (repo databaseRepository) GetAllUser(ctx context.Context) (*[]entities.User, error) {
+	var users []entities.User
+
+	// Query all users with the given context
+	result := repo.db.GetInstance().WithContext(ctx).Find(&users)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &users, nil
+}

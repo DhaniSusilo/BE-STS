@@ -185,6 +185,23 @@ func (handler *Http) GetRekapitulasi(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
+func (handler *Http) GetAllUser(c *gin.Context) {
+	ctx := c.Request.Context()
+
+	// Call the use case
+	result, err := handler.uc.GetAllUser(ctx)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, responses.BasicResponse{
+			Error: err.Error(),
+		})
+		return
+	}
+
+	// Success response
+	c.JSON(http.StatusOK, result)
+}
+
+
 
 
 
