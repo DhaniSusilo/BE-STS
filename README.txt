@@ -1,0 +1,1 @@
+don't forget to correct the config.yaml file, to connect to your database.
