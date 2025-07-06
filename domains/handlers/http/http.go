@@ -1,6 +1,7 @@
 package http
 
 import (
+	"fmt"
 	interfaces "learning-backend/domains"
 	"learning-backend/domains/models/requests"
 	"learning-backend/shared/models/responses"
@@ -200,6 +201,40 @@ func (handler *Http) GetAllUser(c *gin.Context) {
 	// Success response
 	c.JSON(http.StatusOK, result)
 }
+
+func (handler *Http) UpdateUser(c *gin.Context) {
+    var req requests.UpdateUser
+    if err := c.ShouldBindJSON(&req); err != nil {
+        c.JSON(http.StatusBadRequest, responses.BasicResponse{Error: "Invalid request"})
+        return
+    }
+
+	fmt.Println(req)
+    res, err := handler.uc.UpdateUser(c.Request.Context(), req.UserName, req.Level, req.For)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, responses.BasicResponse{Error: err.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, res)
+}
+
+func (handler *Http) DeleteUser(c *gin.Context) {
+    userID := c.Param("id")
+    if userID == "" {
+        c.JSON(http.StatusBadRequest, responses.BasicResponse{Error: "User ID is required"})
+        return
+    }
+
+    res, err := handler.uc.DeleteUser(c.Request.Context(), userID)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, responses.BasicResponse{Error: err.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, res)
+}
+
 
 
 

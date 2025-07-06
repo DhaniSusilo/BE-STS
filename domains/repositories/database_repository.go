@@ -18,7 +18,6 @@ type databaseRepository struct {
 }
 
 
-
 func NewDatabaseRepository(db infrastructures.Database) interfaces.Repository {
 	return databaseRepository{
 		db: db,
@@ -153,8 +152,6 @@ func (repo databaseRepository) GetAggregatedRekapitulasi(ctx context.Context, le
 		Where(whereClause).
 		Group(groupByField).
 		Order(groupByField).
-		Limit(rowsPerPage).
-		Offset(offset).
 		Scan(&results).Error
 
 	if err != nil {
@@ -214,3 +211,19 @@ func (repo databaseRepository) GetAllUser(ctx context.Context) (*[]entities.User
 
 	return &users, nil
 }
+
+func (repo databaseRepository) UpdateUser(ctx context.Context, username string, level string, forValue string) error {
+	err := repo.db.GetInstance().WithContext(ctx).Model(&entities.User{}).
+		Where("username = ?", username).
+		Updates(map[string]interface{}{
+			"level": level,
+			"for":   forValue,
+		}).Error
+	// fmt.Println(err)
+	return err
+}
+
+func (repo databaseRepository) DeleteUser(ctx context.Context, userID string) error {
+    return repo.db.GetInstance().WithContext(ctx).Where("id = ?", userID).Delete(&entities.User{}).Error
+}
+

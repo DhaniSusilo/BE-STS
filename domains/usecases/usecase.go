@@ -181,3 +181,38 @@ func (u UseCase) GetAllUser(ctx context.Context) (*sharedresponse.BasicResponse,
 		},
 	}, nil
 }
+
+func (uc UseCase) UpdateUser(ctx context.Context, username string, level string, forValue string) (*sharedresponse.BasicResponse, error) {
+    err := uc.repo.UpdateUser(ctx, username, level, forValue)
+    if err != nil {
+        return nil, err
+    }
+
+	return &sharedresponse.BasicResponse{
+		Data: struct{
+			Message string
+
+		}{
+
+			Message: "User updated successfully",		
+		},
+	}, nil
+}
+
+func (uc UseCase) DeleteUser(ctx context.Context, userID string) (*sharedresponse.BasicResponse, error) {
+    err := uc.repo.DeleteUser(ctx, userID)
+    if err != nil {
+        return nil, err
+    }
+
+    return &sharedresponse.BasicResponse{
+		Data: struct{
+			Message string
+
+		}{
+
+			Message: "User deleted successfully",		
+		},
+	}, nil
+}
+

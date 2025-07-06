@@ -1,0 +1,9 @@
+duplicate db:
+
+1.pg_dump -U postgres -h localhost -p 5432 -d [database name] > [file name].sql
+
+copy to local:
+
+1.create new db
+
+2.cmd : psql -U postgres -h localhost -d [database name] -a -f [file name].sql
