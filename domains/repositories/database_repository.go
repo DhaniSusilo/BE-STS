@@ -227,3 +227,23 @@ func (repo databaseRepository) DeleteUser(ctx context.Context, userID string) er
     return repo.db.GetInstance().WithContext(ctx).Where("id = ?", userID).Delete(&entities.User{}).Error
 }
 
+func (repo databaseRepository) CountMembersInTimeRange(ctx context.Context, req *requests.GetTimeIntervalData) (int, error) {
+    var count int64
+    db := repo.db.GetInstance().WithContext(ctx).Model(&entities.Member{})
+
+    switch req.Level {
+    case "Provinsi":
+        db = db.Where("provinsi = ?", req.For)
+    case "Kabupaten":
+        db = db.Where("kabupaten = ?", req.For)
+    case "Kecamatan":
+        db = db.Where("kecamatan = ?", req.For)
+    case "Kelurahan":
+        db = db.Where("kelurahan = ?", req.For)
+    }
+
+    err := db.Where("created_at >= ? AND created_at < ?", req.Start, req.End).Count(&count).Error
+    return int(count), err
+}
+
+

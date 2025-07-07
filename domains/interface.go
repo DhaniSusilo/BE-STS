@@ -17,6 +17,7 @@ type UseCase interface {
 	GetAllUser(ctx context.Context) (*sharedresponses.BasicResponse,error)
 	UpdateUser(ctx context.Context, username string, level string, forValue string) (*sharedresponses.BasicResponse, error)
 	DeleteUser(ctx context.Context, userID string) (*sharedresponses.BasicResponse, error)
+	GetMemberCountInInterval(ctx context.Context, request *requests.GetTimeIntervalData) (*responses.GetTimeIntervalData, error)
 }
 
 type Repository interface {
@@ -30,4 +31,5 @@ type Repository interface {
 	GetAllUser(ctx context.Context) (*[]entities.User,error)
     UpdateUser(ctx context.Context, username string, level , forValue string) error
 	DeleteUser(ctx context.Context, userID string) error
+	CountMembersInTimeRange(ctx context.Context, req *requests.GetTimeIntervalData) (int, error)
 }

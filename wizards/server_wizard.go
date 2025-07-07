@@ -24,6 +24,7 @@ func RegisterServer(router *gin.Engine) {
 	admin := router.Group("/admins")
 	{
 		admin.POST("/dashboard",Http.GetDashboardData)
+		admin.POST("/interval/data",Http.GetMemberCountInInterval)
 		admin.POST("/rekap",Http.GetRekapitulasi)
 		admin.GET("/all",Http.GetAllUser)
 		admin.POST("/edit",Http.UpdateUser)

@@ -235,6 +235,29 @@ func (handler *Http) DeleteUser(c *gin.Context) {
     c.JSON(http.StatusOK, res)
 }
 
+func (handler *Http) GetMemberCountInInterval(c *gin.Context) {
+	var req requests.GetTimeIntervalData
+
+	// Bind JSON dari body request
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, responses.BasicResponse{
+			Error: "Invalid request body: " + err.Error(),
+		})
+		return
+	}
+
+	// Panggil use case
+	res, err := handler.uc.GetMemberCountInInterval(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, responses.BasicResponse{
+			Error: err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
+}
+
 
 
 

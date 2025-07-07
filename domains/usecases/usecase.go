@@ -216,3 +216,18 @@ func (uc UseCase) DeleteUser(ctx context.Context, userID string) (*sharedrespons
 	}, nil
 }
 
+func (uc UseCase) GetMemberCountInInterval(ctx context.Context, request *requests.GetTimeIntervalData) (*responses.GetTimeIntervalData, error) {
+
+	count, err := uc.repo.CountMembersInTimeRange(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+
+	return &responses.GetTimeIntervalData{
+		Total: count,
+		Start: request.Start,
+		End:   request.End,
+	}, nil
+}
+
+
