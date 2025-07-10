@@ -14,10 +14,8 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-// ✅ 1. Define a custom context key type to avoid staticcheck warning
 type contextKey string
 
-// ✅ 2. Define the key constant for storing user info in context
 const AuthUserKey contextKey = "auth-user"
 
 func AuthMiddleware() gin.HandlerFunc {
